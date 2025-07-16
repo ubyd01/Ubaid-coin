@@ -1,8 +1,7 @@
 // firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDAH3i3trH1W21xhyJqMgXObZil3PDjlmU",
   authDomain: "ubyd-webapp.firebaseapp.com",
@@ -12,6 +11,5 @@ const firebaseConfig = {
   appId: "1:432754390488:web:e3cf6e8e094e0877462ead"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
