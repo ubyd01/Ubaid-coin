@@ -1,15 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>👑 Ubaid Coin 🪙 Mining</title>
+  <meta charset="UTF-8">
+  <title>👑 Ubaid Coin 🪙</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="script.js" defer></script>
-  <script src="firebase.js" defer></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Welcome, <span id="username"></span></h1>
-  <button onclick="startMining()">Tap to Mine 👇</button>
-  <p>Your balance: <span id="balance">0</span> UBYD</p>
-  <a href="dashboard.html">Go to Dashboard</a>
+  <div class="container">
+    <h1>Welcome, <span id="username">...</span></h1>
+    <p>Your balance: <span id="balance">0</span> 🪙 UBYD</p>
+
+    <button onclick="startMining()">🚀 Tap to Mine</button>
+
+    <p class="ref">Invite friends & earn 1000 UBYD each!</p>
+    <input id="refLink" type="text" readonly>
+    <button onclick="copyReferral()">🔗 Copy Referral Link</button>
+  <nav>
+   <a href="dashboard.html">Dashboard</a> |
+   <a href="leaderboard.html">Leaderboard</a> |
+   <a href="withdrawal.html">Withdraw</a>
+  </nav>
+  </div>
 </body>
-</html>
+  </html>
