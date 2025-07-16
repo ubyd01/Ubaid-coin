@@ -1,6 +1,7 @@
 <script type="module" src="script.js"></script>
 <html lang="en">
-<head>
+<head><script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+  
   <meta charset="UTF-8">
   <title>👑 Ubaid Coin 🪙</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +15,9 @@
     <p>Your balance: <span id="balance">0</span> 🪙 UBYD</p>
 
     <button onclick="startMining()">🚀 Tap to Mine</button>
+    <body><h3>🔌 Connect Wallet</h3>
+<button onclick="connectWallet()">🔗 Connect Wallet</button>
+<p>Wallet: <span id="walletAddress">Not connected</span></p>  </body>
 
     <p>Invite friends & earn <strong>+1000 UBYD</strong>!</p>
     <input id="refLink" type="text" readonly>
