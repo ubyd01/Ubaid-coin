@@ -1,24 +1,17 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-import { getDatabase, ref, set, get, update, child } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+// firebase.js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// Your Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyDfpuC5SkmpeSQBGZIl8BkzVKPfGzMQLfo",
-  authDomain: "ubaid-coin-web.firebaseapp.com",
-  projectId: "ubaid-coin-web",
-  storageBucket: "ubaid-coin-web.firebasestorage.app",
-  messagingSenderId: "176984179390",
-  appId: "1:176984179390:web:9876ec51afbadcef9854ef"
+  apiKey: "AIzaSyDAH3i3trH1W21xhyJqMgXObZil3PDjlmU",
+  authDomain: "ubyd-webapp.firebaseapp.com",
+  projectId: "ubyd-webapp",
+  storageBucket: "ubyd-webapp.firebasestorage.app",
+  messagingSenderId: "432754390488",
+  appId: "1:432754390488:web:e3cf6e8e094e0877462ead"
 };
+
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-window.saveUserData = (username, balance, referrer) => {
-  set(ref(db, 'users/' + username), {
-    balance: balance,
-    referrer: referrer || null
-  });
-};
-
-window.getUserData = async (username) => {
-  const snapshot = await get(child(ref(db), `users/${username}`));
-  return snapshot.exists() ? snapshot.val() : null;
-};
+export const db = getFirestore(app);
