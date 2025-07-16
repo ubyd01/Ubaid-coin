@@ -1,33 +1,27 @@
-<script type="module" src="script.js"></script>
+<!DOCTYPE html>
 <html lang="en">
-<head><script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
-  
-  <meta charset="UTF-8">
+<head>
+  <meta charset="UTF-8" />
   <title>👑 Ubaid Coin 🪙</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="script.js" defer></script>
-  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+  <script type="module" src="script.js" defer></script>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Welcome, <span id="username">...</span></h1>
+    <h1>Welcome, <span id="username">Guest</span></h1>
     <p>Your balance: <span id="balance">0</span> 🪙 UBYD</p>
-
     <button onclick="startMining()">🚀 Tap to Mine</button>
-    <body><h3>🔌 Connect Wallet</h3>
-<button onclick="connectWallet()">🔗 Connect Wallet</button>
-<p>Wallet: <span id="walletAddress">Not connected</span></p>  </body>
 
-    <p>Invite friends & earn <strong>+1000 UBYD</strong>!</p>
-    <input id="refLink" type="text" readonly>
-    <button onclick="copyReferral()">🔗 Copy Referral Link</button>
+    <h3>🎁 Invite Friends & Earn +1000</h3>
+    <input id="refLink" type="text" readonly />
+    <button onclick="copyReferral()">📋 Copy Referral Link</button>
 
-    <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="leaderboard.html">Leaderboard</a>
-      <a href="withdrawal.html">Withdraw</a>
-    </nav>
+    <h3>🔌 Connect Wallet</h3>
+    <button onclick="connectWallet()">🔗 Connect Wallet</button>
+    <p>Wallet: <span id="walletAddress">Not connected</span></p>
   </div>
 </body>
-      </html>
+  </html>
