@@ -76,3 +76,27 @@ window.copyReferral = () => {
   document.execCommand("copy");
   alert("🔗 Referral link copied!");
 };
+window.connectWallet = async () => {
+  if (!window.ethereum) {
+    alert("❌ MetaMask or wallet not found. Please install it.");
+    return;
+  }
+
+  try {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner();
+    const wallet = await signer.getAddress();
+
+    document.getElementById("walletAddress").innerText = wallet;
+
+    // Save wallet address to Firebase
+    const userRef = doc(db, "users", username);
+    await updateDoc(userRef, { wallet });
+
+    alert("✅ Wallet connected and saved!");
+  } catch (err) {
+    console.error("Wallet connect failed:", err);
+    alert("⚠️ Wallet connection failed");
+  }
+};
