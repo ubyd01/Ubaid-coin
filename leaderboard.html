@@ -1,21 +1,34 @@
+<!-- leaderboard.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Leaderboard | Ubaid Coin</title>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="script.js" defer></script>
+  <title>🏆 Leaderboard - UBYD</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>🏆 Leaderboard</h1>
-    <ul id="leaderboardList"></ul>
+  <h2>🏆 Leaderboard</h2>
+  <ul id="leaderboardList"></ul>
+  <a href="index.html"><button>🔙 Back to Home</button></a>
 
-    <nav>
-      <a href="index.html">Mine</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="withdrawal.html">Withdraw</a>
-    </nav>
-  </div>
+  <script type="module">
+    import { db, ref, get } from './firebase.js';
+    import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    get(ref(db, 'users')).then(snapshot => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const sorted = Object.entries(data).sort((a, b) => (b[1].balance || 0) - (a[1].balance || 0)).slice(0, 10);
+        const list = document.getElementById("leaderboardList");
+        sorted.forEach(([id, user], index) => {
+          const name = user.username || id;
+          const li = document.createElement("li");
+          li.textContent = `${index + 1}. ${name} - ${user.balance || 0} 🪙`;
+          list.appendChild(li);
+        });
+      }
+    });
+  </script>
 </body>
 </html>
