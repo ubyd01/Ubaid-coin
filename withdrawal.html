@@ -1,19 +1,49 @@
+<!-- withdraw.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Withdraw | Ubaid Coin</title>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💸 Withdraw - UBYD</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>💸 Withdraw Coming Soon!</h1>
-    <p>You'll soon be able to connect your wallet & cash out UBYD 🪙</p>
-    <nav>
-      <a href="index.html">Mine</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="leaderboard.html">Leaderboard</a>
-    </nav>
-  </div>
+  <h2>💸 Withdraw UBYD</h2>
+  <p>Minimum: 10,000 🪙</p>
+  <input type="text" id="wallet" placeholder="Enter your wallet address" class="input-box" />
+  <button onclick="requestWithdraw()">Request Withdraw</button>
+  <p id="msg"></p>
+  <a href="index.html"><button>🔙 Back to Home</button></a>
+
+  <script type="module">
+    import { db, ref, get, set } from './firebase.js';
+
+    let tg = window.Telegram.WebApp;
+    let user = tg.initDataUnsafe?.user || null;
+    let userId = user ? user.id : "guest";
+
+    window.requestWithdraw = () => {
+      const wallet = document.getElementById("wallet").value;
+      if (!wallet) {
+        return alert("Enter your wallet address");
+      }
+      const userRef = ref(db, 'users/' + userId);
+      get(userRef).then(snap => {
+        if (snap.exists()) {
+          const userData = snap.val();
+          if (userData.balance >= 10000) {
+            set(ref(db, `withdraws/${userId}`), {
+              wallet,
+              amount: userData.balance,
+              status: 'pending'
+            });
+            document.getElementById("msg").textContent = "✅ Withdraw request submitted!";
+          } else {
+            document.getElementById("msg").textContent = "❌ Not enough balance to withdraw.";
+          }
+        }
+      });
+    };
+  </script>
 </body>
-      </html>
+</html>
