@@ -1,26 +1,33 @@
+<!-- dashboard.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Dashboard | Ubaid Coin</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📊 Dashboard - UBYD</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="script.js" defer></script>
-  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>@<span id="username">...</span></h1>
-    <p>Your Balance: <span id="balance">0</span> 🪙</p>
+  <h2>📊 Your Dashboard</h2>
+  <p>Username: <span id="username">Loading...</span></p>
+  <p>Your UBYD Coins: <span id="balance">Loading...</span> 🪙</p>
+  <a href="index.html"><button>🔙 Back to Home</button></a>
 
-    <p>Referral link:</p>
-    <input id="refLink" type="text" readonly>
-    <button onclick="copyReferral()">Copy Referral Link</button>
+  <script type="module">
+    import { db, ref, get } from './firebase.js';
+    let tg = window.Telegram.WebApp;
+    let user = tg.initDataUnsafe?.user || null;
+    let userId = user ? user.id : "guest";
+    document.getElementById("username").textContent = user ? user.username : "Guest";
 
-    <nav>
-      <a href="index.html">Mine</a>
-      <a href="leaderboard.html">Leaderboard</a>
-      <a href="withdrawal.html">Withdraw</a>
-    </nav>
-  </div>
+    get(ref(db, 'users/' + userId)).then(snapshot => {
+      if (snapshot.exists()) {
+        document.getElementById("balance").textContent = snapshot.val().balance || 0;
+      } else {
+        document.getElementById("balance").textContent = "0";
+      }
+    });
+  </script>
 </body>
-  </html>
+</html>
