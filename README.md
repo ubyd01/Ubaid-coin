@@ -1,23 +1,25 @@
-# 👑 Ubaid Coin 🪙 Telegram Web Mining App
+# 👑 Ubaid Coin 🪙
 
-A Web3 mining app like Notcoin, built with:
+Ubaid Coin is a Web3-style tap mining app inspired by TapSwap. Built with Firebase, users can:
+- Sign up/login with email and password
+- Tap to mine coins with no limit
+- Track balance on dashboard
+- Get referral link using their email
 
-- Firebase Realtime DB
-- Tap-to-Mine
-- Referral System
-- WalletConnect
-- Telegram WebApp
+## 🚀 Features
+- Firebase Auth (Email/Password)
+- Realtime Database for coin balance
+- Referrals by email
+- Hosted with GitHub + Vercel
 
-## Features
+## 📁 Folder Structure
 
-- 🪙 Tap to mine coins
-- 🎁 Invite friends to earn bonuses
-- 🔌 WalletConnect (MetaMask & Trust)
-- 📊 Dashboard
-- 🏆 Leaderboard
-- 💸 Withdraw page
+/index.html /signup.html /login.html /dashboard.html /firebase.js /script.js /style.css /README.md
 
-## Setup
+## ⚙️ Setup
+1. Clone or upload to GitHub
+2. Add Firebase config to `firebase.js`
+3. Enable Firebase Email/Password Auth
+4. Deploy to Vercel or GitHub Pages
 
-1. Upload to GitHub or Firebase Hosting
-2. Enable Realtime Database with public
+✅ Live Demo: [https://ubaid-coin.vercel.app](https://ubaid-coin.vercel.app)
