@@ -20,11 +20,4 @@ A Web3 mining app like Notcoin, built with:
 ## Setup
 
 1. Upload to GitHub or Firebase Hosting
-2. Enable Realtime Database with public rules:
-```json
-{
-  "rules": {
-    ".read": "now < 1755298800000",
-    ".write": "now < 1755298800000"
-  }
-}
+2. Enable Realtime Database with public
