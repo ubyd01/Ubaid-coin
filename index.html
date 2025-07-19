@@ -1,36 +1,15 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>👑 Ubaid Coin 🪙</title>
+  <title>Ubaid Coin 🪙</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <h2>👋 Welcome, <span id="username">Guest</span></h2>
-  <p>Your balance: <span id="balance">0</span> 🪙 UBYD</p>
-
-  <button id="mineBtn">🪙 Tap to Mine</button>
-
-  <div class="section">
-    <h3>🎁 Invite Friends & Earn +1000</h3>
-    <input type="text" id="refLink" class="input-box" readonly />
-    <button onclick="copyReferral()">📋 Copy Referral Link</button>
+  <div class="container">
+    <h1>👑 Welcome to Ubaid Coin</h1>
+    <p>Start earning by tapping. Powered by Community.</p>
+    <a href="signup.html"><button>Sign Up</button></a>
+    <a href="login.html"><button>Login</button></a>
   </div>
-
-  <div class="section">
-    <button onclick="connectWallet()">🔌 Connect Wallet</button>
-    <p id="walletStatus">Wallet: Not connected</p>
-  </div>
-
-  <div class="section">
-    <a href="dashboard.html"><button>📊 Dashboard</button></a>
-    <a href="leaderboard.html"><button>🏆 Leaderboard</button></a>
-    <a href="withdraw.html"><button>💸 Withdraw</button></a>
-  </div>
-
-  <script type="module" src="script.js"></script>
 </body>
-    </html>
+</html>
