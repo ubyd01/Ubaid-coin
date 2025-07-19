@@ -1,33 +1,20 @@
-<!-- dashboard.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>📊 Dashboard - UBYD</title>
-  <link rel="stylesheet" href="style.css" />
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <title>Dashboard - Ubaid Coin</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h2>📊 Your Dashboard</h2>
-  <p>Username: <span id="username">Loading...</span></p>
-  <p>Your UBYD Coins: <span id="balance">Loading...</span> 🪙</p>
-  <a href="index.html"><button>🔙 Back to Home</button></a>
-
-  <script type="module">
-    import { db, ref, get } from './firebase.js';
-    let tg = window.Telegram.WebApp;
-    let user = tg.initDataUnsafe?.user || null;
-    let userId = user ? user.id : "guest";
-    document.getElementById("username").textContent = user ? user.username : "Guest";
-
-    get(ref(db, 'users/' + userId)).then(snapshot => {
-      if (snapshot.exists()) {
-        document.getElementById("balance").textContent = snapshot.val().balance || 0;
-      } else {
-        document.getElementById("balance").textContent = "0";
-      }
-    });
-  </script>
+  <div class="container">
+    <h1>Ubaid Coin 🪙 Dashboard</h1>
+    <p><strong>Email:</strong> <span id="userEmail"></span></p>
+    <p><strong>Balance:</strong> <span id="balance">0</span></p>
+    <button onclick="mineCoin()">🪙 Tap to Earn</button>
+    <p>Referral Link:</p>
+    <input id="referralLink" readonly />
+    <br />
+    <button onclick="logout()">Logout</button>
+  </div>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
