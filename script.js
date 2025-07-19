@@ -1,61 +1,98 @@
-// script.js
-import { db, ref, set, get, update } from './firebase.js';
+import { auth, db } from './firebase.js';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  ref, set, get, update, child
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-let tg = window.Telegram.WebApp;
-let user = tg.initDataUnsafe?.user || null;
-let userId = user ? user.id : 'guest_' + Math.random().toString(36).substring(2, 10);
-let balance = 0;
-let refParam = new URLSearchParams(window.location.search).get("ref");
+const signup = async () => {
+  const email = document.getElementById("signupEmail").value;
+  const password = document.getElementById("signupPassword").value;
+  const refEmail = new URLSearchParams(window.location.search).get("ref") || "none";
 
-// Set username
-document.getElementById("username").textContent = user ? user.username : "Guest";
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const uid = userCredential.user.uid;
+    await set(ref(db, 'users/' + uid), {
+      email: email,
+      balance: 0,
+      referredBy: refEmail
+    });
 
-// Fetch or create user balance
-const balanceRef = ref(db, 'users/' + userId);
-get(balanceRef).then(snapshot => {
-  if (snapshot.exists()) {
-    balance = snapshot.val().balance || 0;
-  } else {
-    set(balanceRef, { balance: 0, referrals: 0 });
-    if (refParam && refParam !== userId) {
-      const refUser = ref(db, 'users/' + refParam);
-      get(refUser).then(refSnap => {
-        if (refSnap.exists()) {
-          let currentRef = refSnap.val().balance || 0;
-          update(refUser, { balance: currentRef + 1000 });
-        }
-      });
+    if (refEmail !== "none") {
+      rewardReferrer(refEmail);
     }
+
+    window.location.href = "dashboard.html";
+  } catch (error) {
+    alert(error.message);
   }
-  document.getElementById("balance").textContent = balance;
-});
+};
 
-// Tap to Mine
-document.getElementById("mineBtn").addEventListener("click", () => {
-  balance += 1;
-  document.getElementById("balance").textContent = balance;
-  update(balanceRef, { balance });
-});
+const login = async () => {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
 
-// Referral Link
-const link = `${window.location.origin}${window.location.pathname}?ref=${userId}`;
-document.getElementById("refLink").value = link;
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    window.location.href = "dashboard.html";
+  } catch (error) {
+    alert(error.message);
+  }
+};
 
-window.copyReferral = () => {
-  navigator.clipboard.writeText(link).then(() => {
-    alert("Referral link copied!");
+const logout = async () => {
+  await signOut(auth);
+  window.location.href = "login.html";
+};
+
+const mineCoin = async () => {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const uid = user.uid;
+  const userRef = ref(db, 'users/' + uid);
+  const snapshot = await get(userRef);
+
+  if (snapshot.exists()) {
+    const data = snapshot.val();
+    const newBalance = (data.balance || 0) + 1;
+    await update(userRef, { balance: newBalance });
+    document.getElementById("balance").innerText = newBalance;
+  }
+};
+
+const rewardReferrer = async (refEmail) => {
+  const usersRef = ref(db, 'users');
+  const snapshot = await get(usersRef);
+  snapshot.forEach(childSnap => {
+    const data = childSnap.val();
+    if (data.email === refEmail) {
+      const refBalance = (data.balance || 0) + 1000;
+      update(ref(db, 'users/' + childSnap.key), { balance: refBalance });
+    }
   });
 };
 
-// Connect Wallet (placeholder logic)
-window.connectWallet = () => {
-  if (typeof window.ethereum !== 'undefined') {
-    window.ethereum.request({ method: 'eth_requestAccounts' }).then(accounts => {
-      document.getElementById("walletStatus").textContent = `Wallet: ${accounts[0]}`;
-    }).catch(err => {
-      alert("Wallet connection failed.");
-    });
-  } else {
-    alert("No wallet found. Install MetaMask or Trust Wallet.");
+onAuthStateChanged(auth, async (user) => {
+  if (window.location.pathname.endsWith("dashboard.html") && user) {
+    document.getElementById("userEmail").innerText = user.email;
+    const uid = user.uid;
+    const snap = await get(ref(db, 'users/' + uid));
+    if (snap.exists()) {
+      const data = snap.val();
+      document.getElementById("balance").innerText = data.balance;
+      document.getElementById("referralLink").value = `${window.location.origin}/signup.html?ref=${user.email}`;
+    }
   }
-};
+});
+
+// Expose functions globally
+window.signup = signup;
+window.login = login;
+window.logout = logout;
+window.mineCoin = mineCoin;
