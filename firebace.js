@@ -1,17 +1,19 @@
 // firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, set, get, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDfpuC5SkmpeSQBGZIl8BkzVKPfGzMQLfo",
-  authDomain: "ubaid-coin-web.firebaseapp.com",
-  projectId: "ubaid-coin-web",
-  storageBucket: "ubaid-coin-web.firebasestorage.app",
-  messagingSenderId: "176984179390",
-  appId: "1:176984179390:web:9876ec51afbadcef9854ef"
+  apiKey: "AIzaSyDk3438v0le9QNgSWF_IZmbRM0Xagy9Wtk",
+  authDomain: "ubaid-coin-79045.firebaseapp.com",
+  databaseURL: "https://ubaid-coin-79045-default-rtdb.firebaseio.com",
+  projectId: "ubaid-coin-79045",
+  storageBucket: "ubaid-coin-79045.firebasestorage.app",
+  messagingSenderId: "324999835323",
+  appId: "1:324999835323:web:7303c36b2c955cd411839e",
+  measurementId: "G-6623RCKWE0"
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-export { db, ref, set, get, update };
+export const auth = getAuth(app);
+export const db = getDatabase(app);
