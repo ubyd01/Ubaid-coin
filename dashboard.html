@@ -1,20 +1,19 @@
-<!DOCTYPE html>
 <html>
 <head>
-  <title>Dashboard - Ubaid Coin</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Dashboard | Ubaid Coin</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Ubaid Coin 🪙 Dashboard</h1>
-    <p><strong>Email:</strong> <span id="userEmail"></span></p>
-    <p><strong>Balance:</strong> <span id="balance">0</span></p>
-    <button onclick="mineCoin()">🪙 Tap to Earn</button>
-    <p>Referral Link:</p>
+    <h2>Welcome, <span id="username"></span></h2>
+    <p>Coins: <span id="coinCount">0</span></p>
+    <button onclick="tapCoin()">🪙 Tap to Mine</button>
+    <p>Your Referral Link:</p>
     <input id="referralLink" readonly />
-    <br />
+    <br><br>
     <button onclick="logout()">Logout</button>
   </div>
-  <script type="module" src="script.js"></script>
+  <script src="firebase.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
