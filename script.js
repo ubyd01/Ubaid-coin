@@ -1,98 +1,62 @@
-import { auth, db } from './firebase.js';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {
-  ref, set, get, update, child
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+const db = firebase.database();
+const auth = firebase.auth();
 
-const signup = async () => {
+function handleSignup(e) {
+  e.preventDefault();
   const email = document.getElementById("signupEmail").value;
   const password = document.getElementById("signupPassword").value;
-  const refEmail = new URLSearchParams(window.location.search).get("ref") || "none";
 
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const uid = userCredential.user.uid;
-    await set(ref(db, 'users/' + uid), {
-      email: email,
-      balance: 0,
-      referredBy: refEmail
-    });
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      db.ref("users/" + user.uid).set({
+        email: user.email,
+        coins: 0,
+        referral: email
+      });
+      window.location.href = "dashboard.html";
+    })
+    .catch(err => alert(err.message));
+}
 
-    if (refEmail !== "none") {
-      rewardReferrer(refEmail);
-    }
-
-    window.location.href = "dashboard.html";
-  } catch (error) {
-    alert(error.message);
-  }
-};
-
-const login = async () => {
+function handleLogin(e) {
+  e.preventDefault();
   const email = document.getElementById("loginEmail").value;
   const password = document.getElementById("loginPassword").value;
 
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    window.location.href = "dashboard.html";
-  } catch (error) {
-    alert(error.message);
-  }
-};
+  auth.signInWithEmailAndPassword(email, password)
+    .then(() => {
+      window.location.href = "dashboard.html";
+    })
+    .catch(err => alert(err.message));
+}
 
-const logout = async () => {
-  await signOut(auth);
-  window.location.href = "login.html";
-};
-
-const mineCoin = async () => {
-  const user = auth.currentUser;
-  if (!user) return;
-
-  const uid = user.uid;
-  const userRef = ref(db, 'users/' + uid);
-  const snapshot = await get(userRef);
-
-  if (snapshot.exists()) {
-    const data = snapshot.val();
-    const newBalance = (data.balance || 0) + 1;
-    await update(userRef, { balance: newBalance });
-    document.getElementById("balance").innerText = newBalance;
-  }
-};
-
-const rewardReferrer = async (refEmail) => {
-  const usersRef = ref(db, 'users');
-  const snapshot = await get(usersRef);
-  snapshot.forEach(childSnap => {
-    const data = childSnap.val();
-    if (data.email === refEmail) {
-      const refBalance = (data.balance || 0) + 1000;
-      update(ref(db, 'users/' + childSnap.key), { balance: refBalance });
-    }
+function logout() {
+  auth.signOut().then(() => {
+    window.location.href = "index.html";
   });
-};
+}
 
-onAuthStateChanged(auth, async (user) => {
-  if (window.location.pathname.endsWith("dashboard.html") && user) {
-    document.getElementById("userEmail").innerText = user.email;
-    const uid = user.uid;
-    const snap = await get(ref(db, 'users/' + uid));
-    if (snap.exists()) {
-      const data = snap.val();
-      document.getElementById("balance").innerText = data.balance;
-      document.getElementById("referralLink").value = `${window.location.origin}/signup.html?ref=${user.email}`;
-    }
+function tapCoin() {
+  const user = auth.currentUser;
+  if (user) {
+    const userRef = db.ref("users/" + user.uid);
+    userRef.once("value", snapshot => {
+      let current = snapshot.val().coins || 0;
+      userRef.update({ coins: current + 1 });
+      document.getElementById("coinCount").innerText = current + 1;
+    });
+  }
+}
+
+auth.onAuthStateChanged(user => {
+  if (user && document.getElementById("dashboard")) {
+    const userRef = db.ref("users/" + user.uid);
+    userRef.once("value", snapshot => {
+      const data = snapshot.val();
+      document.getElementById("username").innerText = user.email;
+      document.getElementById("coinCount").innerText = data.coins || 0;
+      document.getElementById("referralLink").value = window.location.origin + "/signup.html?ref=" + encodeURIComponent(user.email);
+    });
   }
 });
-
-// Expose functions globally
-window.signup = signup;
-window.login = login;
-window.logout = logout;
-window.mineCoin = mineCoin;
