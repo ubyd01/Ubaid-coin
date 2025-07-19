@@ -1,6 +1,6 @@
 # 👑 Ubaid Coin 🪙
 
-Ubaid Coin is a Web3-style tap mining app inspired by TapSwap. Built with Firebase, users can:
+Ubaid Coin is a Web3-style tap mining app inspired by notcoin. Built with Firebase, users can:
 - Sign up/login with email and password
 - Tap to mine coins with no limit
 - Track balance on dashboard
